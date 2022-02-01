@@ -157,7 +157,6 @@ namespace Petaframework
                 {
                     var model = attr as ModelMetadataTypeAttribute;
                     if (model != null && model.MetadataType != null)
-                        //TODO Net Core
                         foreach (var metadata in model.MetadataType.GetProperties())
                         {
                             foreach (var metaAttr in metadata.GetCustomAttributes(true))
