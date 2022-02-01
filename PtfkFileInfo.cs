@@ -143,9 +143,6 @@ namespace Petaframework
                     files.ForEach((System.Action<PtfkFileInfo>)(x => x.FileInfo = new FileInfo(x.FileInfo.FullName)));
                     list2 = files.Where<PtfkFileInfo>((Func<PtfkFileInfo, bool>)(x => x.EntityName.Equals(entityName) && !x.ToDelete && (x.ParentID.Equals(entityID) || x.ParentID.Equals(0)) && (x.EntityProperty.Equals(entityProperty) || x.EntityProperty.EndsWith("_" + entityProperty) || entityProperty.EndsWith("_" + x.EntityProperty)) && x.FileInfo.Exists)).ToList<PtfkFileInfo>();
                 }
-                //else
-                // if (list2.Count() == 0)
-                //    list2 = files.Where<PtfkFileInfo>((Func<PtfkFileInfo, bool>)(x => x.EntityName.Equals(entityName) && !x.ToDelete && (!String.IsNullOrWhiteSpace(x.UID) && x.UID.Equals(entityID)) && (x.EntityProperty.Equals(entityProperty) || x.EntityProperty.EndsWith("_" + entityProperty) || entityProperty.EndsWith("_" + x.EntityProperty)) && x.FileInfo.Exists)).ToList<PtfkFileInfo>();
                 return PtfkFileInfo.GetUniqueFiles(list2, t1);
             }
             try
@@ -519,7 +516,6 @@ namespace Petaframework
                     }
                     else
                     {
-                        string jsonStr = "";
                         List<String> hashList = new List<string>();
 
                         try
@@ -652,35 +648,10 @@ namespace Petaframework
         {
             long lID = -1;
             long.TryParse(file.UID, out lID);
-            if (lID < 0)//Novo arquivo
+            if (lID < 0)
                 return true;
             return false;
         }
-
-        //internal static long SaveMedia(IPtfkMedia media, IPtfkSession session)
-        //{
-        //    try
-        //    {
-        //        var instance = Activator.CreateInstance(BusinessClassMedia.GetType(), new object[] { session });
-
-        //        var toClass = Activator.CreateInstance(BusinessClassMedia.GetType().BaseType.GetGenericArguments()[0]);
-
-        //        foreach (var prop in media.GetType().GetProperties())
-        //        {
-        //            var val = prop.GetValue(media);
-        //            if (val != null && prop.SetMethod != null)
-        //                toClass.GetType().GetProperty(prop.Name).SetValue(toClass, val);
-        //        }
-
-        //        var mediaSaved = BusinessClassMedia.GetType().GetMethod(nameof(IPtfkBusiness<object>.Save)).Invoke(instance, new object[] { toClass }) as System.Threading.Tasks.Task;
-        //        mediaSaved.Wait();
-        //        return (toClass as IPtfkEntity).Id;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return 0;
-        //    }
-        //}
 
         internal static long SaveMedia(IPtfkForm entity, IPtfkMedia media, IPtfkSession session)
         {
@@ -700,7 +671,6 @@ namespace Petaframework
                     switch (StorageMode)
                     {
                         case StorageMode.OnContentDB:
-                            //var filePath = GetStorageRelativeFilePath(entity, media.EntityProperty, media);
                             var file = new FileInfo(GetStorageAbsoluteFilePath(entity, media.EntityProperty, media, true));
 
                             if (!file.Directory.Exists)
@@ -731,7 +701,6 @@ namespace Petaframework
 
                                 IPtfkMedia iMedia = toClass as IPtfkMedia;
 
-                                //var filePath = GetStorageRelativeFilePath(entity, media.EntityProperty, media);
                                 var file = new FileInfo(GetStorageAbsoluteFilePath(entity, iMedia.EntityProperty, iMedia, true));
 
                                 if (!file.Directory.Exists)

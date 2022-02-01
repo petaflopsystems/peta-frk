@@ -68,10 +68,8 @@ namespace Petaframework.Portal
                             pending = 0,
                             running = 0,
                             completed = 0;
-                        //var business = workerEtt.GetType().GetMethod(nameof(PtfkForm<IPtfkForm>.GetBusinessClass)).Invoke(workerEtt, new object[] { });
 
                         InvokeAction(() => this.Events.OnSummary.Invoke(scontext), scontext);
-                        //var filter = workerEtt.GetPtfkFilter(this.FormStruct.FilterObject);
                         scontext.FillOwnerSummary();
 
                         foreach (var ett in scontext.SummaryList)
@@ -109,26 +107,16 @@ namespace Petaframework.Portal
                             LastActivity = dt
                         };
 
-
-                        //SetContextParent(scontext);
-                        //this.Events.OnSummary.Invoke(scontext).Wait();
-                        //GetContextParent(scontext);
                         ret = scontext.ResponseObject();
                         break;
                     case Constants.ReporterOptions.Enum.DetailsItem:
                         var dcontext = new DetailsResponseContext();
                         InvokeAction(() => this.Events.OnDetails.Invoke(dcontext), dcontext);
-                        //SetContextParent(dcontext);
-                        //this.Events.OnDetails.Invoke(dcontext).Wait();
-                        //GetContextParent(dcontext);
                         ret = dcontext.ResponseObject();
                         break;
                     case Constants.ReporterOptions.Enum.List://list - Active requests to and from the owner (IPtfkWorker)
                         var lcontext = new ListResponseContext();
                         InvokeAction(() => this.Events.OnList.Invoke(lcontext), lcontext);
-                        //SetContextParent(lcontext);
-                        //this.Events.OnList.Invoke(lcontext).Wait();
-                        //GetContextParent(lcontext);
                         ret = lcontext.ResponseObject();
                         break;
                     case Constants.ReporterOptions.Enum.Check://check - to check environment status 
@@ -325,9 +313,6 @@ namespace Petaframework.Portal
 
     public class ListResponseContext : ReportContextBase, IReportContext
     {
-        //public IPtfkSession GetOwner() { return Parent.Entity.Owner; }
-        //public PetaframeworkStd.Commons.ProcessTask CurrentTask() { return Parent?.Entity?.CurrentWorkflow?.GetCurrentTask(); }
-        //public bool HasFinishedTask() { return Parent?.Entity?.CurrentWorkflow?.Finished() ?? false; }
         public List<IPtfkWorker> DataItems { internal get; set; }
 
         public object ResponseObject()
@@ -345,17 +330,12 @@ namespace Petaframework.Portal
 
     public class FilterResponseContext : ReportContextBase, IReportContext
     {
-        //public IPtfkSession GetOwner() { return Parent.Entity.Owner; }
-        //public PetaframeworkStd.Commons.ProcessTask CurrentTask() { return Parent?.Entity?.CurrentWorkflow?.GetCurrentTask(); }
-        //public bool HasFinishedTask() { return Parent?.Entity?.CurrentWorkflow?.Finished() ?? false; }
         public List<IPtfkWorker> DataItems { internal get; set; }
 
         public List<POCO.OutboundData.DataView> DataView { get; set; }
 
         public object ResponseObject()
         {
-            //var d = ParentReporter.Entity.CurrentWorkflow.GetDiagram();
-
             return new POCO.OutboundData.Filter
             {
                 Workflows = DataItems,

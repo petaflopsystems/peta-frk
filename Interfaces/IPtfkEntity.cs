@@ -11,14 +11,12 @@ namespace Petaframework.Interfaces
     public interface IPtfkEntity : IEntity, IPtfkForm
     {
         long Id { get; set; }
-        //String Make(String json, String type);
+        
         /// <summary>
         /// This is the list of items for the display as selection options
         /// </summary>
         /// <returns>List of ListItem for options</returns>
         List<ListItem> ItemsList();
-
-        //IQueryable<IPtfkForm> DataItems();
 
         void SetBusiness();
 
@@ -27,8 +25,6 @@ namespace Petaframework.Interfaces
         List<Dictionary<String, object>> GetFilteredDataByFields(IEnumerable<string> fields, IEnumerable<long> onlyThisIds = null);
 
         String Make(PageConfig config);
-
-        //ILogger Logger { set; get; }
 
         void OnFileUploaded(PtfkEventArgs<PtfkFileInfo> e);
 
@@ -48,8 +44,6 @@ namespace Petaframework.Interfaces
         string GetSelectedRole();
 
         bool HasPermitionOnCurrentTask(long entityID);
-
-        //bool IsGeneralExtentUser();
 
         List<IPtfkEntityJoin> GetJoinedEntities(String propertyName, long entityToId);
         List<IPtfkEntityJoin> GetJoinedEntities(String propertyName);

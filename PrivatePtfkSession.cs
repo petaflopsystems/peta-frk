@@ -70,36 +70,6 @@ namespace Petaframework
         }
     }
 
-    //public class SessionConverter : JsonConverter
-    //{
-    //    public override object ReadJson(JsonReader reader, Type type,
-    //        object value, JsonSerializer serializer)
-    //    {
-    //        if (reader.TokenType == JsonToken.StartArray)
-    //        {
-    //            JArray jarr = JArray.Load(reader);
-    //            var l = new List<PrivatePtfkSession>();
-    //            foreach (JObject item in jarr)
-    //            {
-    //                item[nameof(PrivatePtfkSession.Roles)] = null;
-    //                l.Add(item.ToObject<PrivatePtfkSession>());
-    //            }
-    //            return l;
-    //        }
-    //        else
-    //        {
-    //            JObject jobject = JObject.Load(reader);
-
-    //            return jobject.ToObject<PrivatePtfkSession>();
-    //        }
-    //    }
-
-    //    public override bool CanConvert(Type type) => true;
-    //    public override bool CanWrite => false;
-    //    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-    //        => throw new NotImplementedException();
-    //}
-
     public class ConfigConverter<I, T> : JsonConverter
     {
         public override bool CanWrite => false;

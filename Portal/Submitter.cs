@@ -101,8 +101,6 @@ namespace Petaframework.Portal
                 Tools.CheckUserSimulation(Owner, _request.File.SimulatedUser, _request.Response);
                 var session = Owner.Current;
 
-                //if (session == null || !SessionEntity.LoggedOn() || String.IsNullOrWhiteSpace(entity))
-                //    throw new Exception("Unauthorized");
                 var pcontext = new FileStageResponseContext(this._request?.File);
                 InvokeAction(() => this.Events?.FileSubmitting?.OnPreValidateResponse?.Invoke(pcontext), pcontext);
 
@@ -202,9 +200,9 @@ namespace Petaframework.Portal
         {
             PtfkFormStruct dform = new PtfkFormStruct();
             var req = _request.Datatable;
-            dform.action = req.Action;// context.Request.Form.GetValues("ptfk_form[action]")[0];
-            dform.url = req.Url;// context.Request.Form.GetValues("ptfk_form[url]")[0];
-            dform.method = req.Method;// context.Request.Form.GetValues("ptfk_form[method]")[0];
+            dform.action = req.Action;
+            dform.url = req.Url;
+            dform.method = req.Method;
 
             var implicitCodes = Tools.FromJson<List<KeyValuePair<string, object>>>(Tools.DecodeBase64(Convert.ToString(req.ImplicitCodes)));
 

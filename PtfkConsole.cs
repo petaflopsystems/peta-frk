@@ -141,27 +141,14 @@ namespace Petaframework
         /// <param name="message">The value to write.</param>
         public static void WriteConfig(string configName, string message)
         {
-            //var i = 0;
-            //var diag = new System.Diagnostics.StackFrame(i, true);
-            //while (diag != null && diag.GetFileName().Contains(nameof(PetaframeworkStd)))
-            //{
-            //    i++;
-            //    diag = new System.Diagnostics.StackFrame(i, true);
-            //}
-            //var skipFrames = i;
             lock (_confMessages)
             {
-                //var diag = new System.Diagnostics.StackFrame(1, true);
-                //var t = " " + diag.GetFileName() + ":" + (diag).GetFileLineNumber();
                 var t = " [" + configName + "]";
 
                 if (_confMessages.Count > 0 && _confMessages.Contains(t))
                     return;
 
                 _confMessages.Add(t);
-                //Console.ForegroundColor = ConsoleColor.DarkCyan;
-
-                //Console.ResetColor();
                 Console.WriteLine(String.Concat(GetForegroundColorEscapeCode(ConsoleColor.Blue) + "#ptfk-config:" + GetForegroundColorEscapeCode(Console.ForegroundColor), t, Environment.NewLine, "              " + message, Environment.NewLine));
             }
         }
@@ -212,18 +199,7 @@ namespace Petaframework
         /// <param name="toStringfy">Object to stringify and write.</param>
         /// <param name="ignoreGlobalConfig">Flag to ignore the global config. If True, always will write the message. Default value: false.</param>
         public static void WriteLine(string message, object toStringfy, bool ignoreGlobalConfig = false)
-        {
-            //var skip = 2;
-            //if (toStringfy is Exception)
-            //{
-            //    var i = 1;
-            //    var diag = new System.Diagnostics.StackFrame(i, true);
-            //    while (diag != null && diag.GetFileName().Contains(nameof(PetaframeworkStd)))
-            //    {
-            //        diag = new System.Diagnostics.StackFrame(i++, true);
-            //    }
-            //    skip = skip + i;
-            //}
+        {            
             if (ignoreGlobalConfig)
             {
                 Print(message + ":" + Petaframework.Tools.ToJson(toStringfy, true), 1);

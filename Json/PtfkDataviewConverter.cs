@@ -156,7 +156,7 @@ namespace Petaframework.Json
                 }
             }
 
-            JToken t = JToken.FromObject(jArr);// JToken.FromObject(value);
+            JToken t = JToken.FromObject(jArr);
 
             if (t.Type != JTokenType.Object)
             {

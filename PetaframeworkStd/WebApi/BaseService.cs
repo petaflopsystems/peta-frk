@@ -173,7 +173,7 @@ namespace PetaframeworkStd.WebApi
                 client.DefaultRequestHeaders.Authorization = Gateway.CurrentAuthorization;
 
             StringBuilder queryString = new StringBuilder();
-            var path = Path;// + "/" + queryString.ToString();
+            var path = Path;
             if (serviceParameters.ToSendParametersList.Any())
                 foreach (var item in serviceParameters.ToSendParametersList)
                     path = path.Replace("{" + item.Key.ToLower() + "}", item.Value.ToString());
