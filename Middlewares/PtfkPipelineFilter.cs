@@ -16,41 +16,30 @@ namespace Petaframework.Middlewares
             this.OIdCSettings = oIdCSettings;
         }
 
-        //IAsyncAuthorizationFilter
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             context.HttpContext.PtfkEnableSubmitter();
             await Task.CompletedTask;
         } 
         
-        //IAsyncResourceFilter
         public async Task OnResourceExecutionAsync(ResourceExecutingContext context, ResourceExecutionDelegate next)
         {
             await next();
-
-            //await context.HttpContext.PtfkBearerAuthenticationAsync(next, _OIdCSettings);
         }
 
-        //IAsyncActionFilter
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             await next();
-            //await context.HttpContext.PtfkBearerAuthenticationAsync(next., PtfkEnvironment.CurrentEnvironment.Configuration.GetSection("OpenId").ToOIdcSettings());
         }
 
-        //IAsyncAlwaysRunResultFilter
         public async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
         {
             await next();
         }
 
-        //IAsyncExceptionFilter
         public async Task OnExceptionAsync(ExceptionContext context)
         {
             await Task.CompletedTask;
         }
-
-
-
     }
 }
