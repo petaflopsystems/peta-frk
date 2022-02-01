@@ -25,7 +25,6 @@ namespace Petaframework
         private System.Threading.Tasks.Task<BusinessProcess> CurrBusinessProcess;
         private Permission[] CurrPermissions;
         private IPtfkBusiness<T> BusinessClass;
-        //private System.Threading.Tasks.Task _OwnerSummary;
 
         private bool _ReadOnlyFlag = false;
 
@@ -115,9 +114,6 @@ namespace Petaframework
         {
             try
             {
-                //if (_id == 0 && CurrLogs != null)
-                //    return CurrLogs;
-
                 var id = _id == 0 ? (CurrEntity as IPtfkEntity).Id : _id;
                 if (id == 0)
                     return new List<IPtfkLog>();
@@ -197,11 +193,6 @@ namespace Petaframework
             return done;
         }
 
-        //private class BusinessProcessEngine
-        //{
-        //    public BusinessProcess BusinessProcess { get; set; }
-        //}
-
         private async System.Threading.Tasks.Task<BusinessProcess> GetBusinessProcess()
         {
             try
@@ -213,12 +204,11 @@ namespace Petaframework
                 }
                 catch (Exception) { }
                 var config = bAux.GetConfig((T)CurrEntity);
-                //config.JsonContent
+                
                 var bpList = Tools.FromJson<List<BusinessProcessMap>>(config.BusinessProcess);
                 var ret = await System.Threading.Tasks.Task.Run(() => BusinessProcessMap(bpList.Where(x => x.BusinessProcess.Entity.Equals(typeof(T).Name)).FirstOrDefault()));
-                //_OwnerSummary = System.Threading.Tasks.Task.Factory.StartNew(() => FillOwnerSummary(GetBusinessClassLogResult()));
-                return ret;
-                //return null;
+                
+                return ret;                
             }
             catch (Exception ex)
             {
@@ -234,28 +224,7 @@ namespace Petaframework
         {
             CurrBPMNFile = System.Threading.Tasks.Task.Factory.StartNew(() => businessProcessMap?.GetBPMNFile());
             var bp = businessProcessMap?.BusinessProcess;
-            //var perms = GetPermissions(bp.Entity).ToList();
-            //foreach (var t in bp.Tasks)
-            //{
-            //    foreach (var c in perms)
-            //    {
-            //        foreach (var x in t.Profiles)
-            //        {
-            //            if ((!String.IsNullOrWhiteSpace(c.ProfileID) && c.ProfileID.Equals(x.ID))
-            //                || (!String.IsNullOrWhiteSpace(c.Profile) && c.Profile.Equals(x.Name)))
-            //            {
-            //                t.NextDelegation = c.NextDelegation?.ToList();
-            //                break;
-
-            //            }
-            //        }
-            //        if (t.NextDelegation != null && t.NextDelegation.Any())
-            //            break;
-            //    }
-            //    // var currPermission = CurrPermissions.Where(c => t.Profiles.Where(x => (!String.IsNullOrWhiteSpace(c.ProfileID) && !String.IsNullOrWhiteSpace(x.ID) && c.ProfileID.Equals(x.ID)) || (!String.IsNullOrWhiteSpace(c.Profile) && !String.IsNullOrWhiteSpace(x.Name) && c.Profile.Equals(x.Name))).Any()).FirstOrDefault();
-            //    //t.DelegateTo = currPermission?.DelegateTo?.ToList();
-
-            //}
+  
             return bp;
         }
 
@@ -412,8 +381,6 @@ namespace Petaframework
             var hasDepartment = !String.IsNullOrWhiteSpace(departmentID);
             var creator = CreatorID();
             creator ??= (processTask.IsFirstTask() ? CurrSession.Login : "");
-            //creator ??= "";
-            //departmentID ??= "";
             foreach (var item in processTask.Profiles)
             {
                 foreach (var permission in listPermissions.Where(x => x.Profile.ToLower().Equals(item.Name.ToLower()) || item.ID.Equals(x.ProfileID)))
@@ -539,10 +506,7 @@ namespace Petaframework
             if (currTask != null && currTask.ID != END_TASK_ID)
             {
                 CheckProfile(currTask);
-                //if (_IsNewInstance)
-                //    currTask = new ProcessTask();
                 var args = new PtfkEventArgs<ProcessTask>(ref currTask);
-                //OnTaskRouting(args);
                 if (currTask != null)
                     GoTo(currTask);
                 else
@@ -563,10 +527,7 @@ namespace Petaframework
             {
                 if (!CurrStruct._SkipProfileCheck)
                     CheckProfile(currTask);
-                //if (_IsNewInstance)
-                //    currTask = new ProcessTask();
                 var args = new PtfkEventArgs<ProcessTask>(ref currTask);
-                //OnTaskRouting(args);
                 if (currTask != null)
                     GoTo(currTask);
                 else
@@ -640,7 +601,6 @@ namespace Petaframework
         {
             if (entityID == 0)
                 return null;
-            //var entity = BusinessClass.Read(entityID);
             var logs = GetLogs(entityID);
 
             var last = logs?.LastOrDefault();
@@ -684,15 +644,6 @@ namespace Petaframework
             if (task != null)
                 AssembleTaskView(task);
         }
-
-        //internal static PtfkFormStruct ToCacheState<T>(this PtfkFormStruct str, T form) where T : IPtfkForm, IPtfkEntity
-        //{
-        //    str.html = new List<HtmlElement> { new HtmlElement { } };
-        //    foreach (var item in form?.CurrentWorkflow?.GetCurrentTask()?.Fields)
-        //    {
-        //        str.html[0].Html.Add()
-        //    }
-        //}
 
         private void AssembleTaskView(ProcessTask taskToAssembly, bool readable = false)
         {
@@ -875,7 +826,6 @@ namespace Petaframework
         {
             try
             {
-                //return false;
                 return CurrPermissions.Where(x => x.IsAdmin.HasValue && x.IsAdmin.Value && (x.Profile.Equals("*") || x.EnabledTo.Contains(CurrSession.Login))).Any();
             }
             catch (Exception ex)
@@ -924,7 +874,6 @@ namespace Petaframework
             CurrStruct = form;
 
             var t = GetCurrentTask();
-            //t = CheckProfile(t);
             AssembleTaskView(t, true);
             return CurrStruct;//Finalized task or new instance!
         }
