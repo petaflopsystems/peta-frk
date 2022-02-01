@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>    
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Deterministic>false</Deterministic>
+  </PropertyGroup>
+
+    <PropertyGroup>
+		<AssemblyName>Petaframework</AssemblyName>
+		<RootNamespace>Petaframework</RootNamespace>
+
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<VersionSuffix>1.5.$([System.DateTime]::UtcNow.ToString(yy)).$([System.DateTime]::UtcNow.ToString(MMdd))</VersionSuffix>
+	    <AssemblyVersion Condition=" '$(VersionSuffix)' == '' ">0.0.0.1</AssemblyVersion>
+	    <AssemblyVersion Condition=" '$(VersionSuffix)' != '' ">$(VersionSuffix)</AssemblyVersion>
+	    <Version Condition=" '$(VersionSuffix)' == '' ">0.0.1.0</Version>
+	    <Version Condition=" '$(VersionSuffix)' != '' ">$(VersionSuffix)</Version>	    
+	    <Copyright>Copyright © $([System.DateTime]::UtcNow.ToString(yyyy))</Copyright>
+	    <PackageProjectUrl>https://petaflop.net/peta-frk</PackageProjectUrl>
+      <ProductName>Peta-frk</ProductName>
+	    <Authors>Petaflop Systems</Authors>
+      <PackageTags>peta-frk peta workflow</PackageTags>
+      <Description>Peta-frk can help you improve productivity</Description>
+    </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="IdentityModel" Version="5.0.1" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="3.1.10" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.10" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+    <PackageReference Include="MongoDB.Driver" Version="2.12.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="xcopy &quot;C:\Codigos\v5.0\Peta-frk\PtfkSolution\Petaframework\bin\Debug\net5.0\Petaframework.dll&quot; &quot;C:\Codigos\v3.1\Workflow\PtfkCommonWebFiles\WebApp\WebFilesToTransfer\lib&quot; /Y /S&#xD;&#xA;del /s /f /q &quot;C:\Codigos\v5.0\Workflow\PtfkCommonWebFiles\WebApp\WebFilesToTransfer\lib\publish&quot;&#xD;&#xA;" />
+  </Target>
+</Project>
