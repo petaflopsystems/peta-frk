@@ -441,12 +441,6 @@ namespace PetaframeworkStd.Commons
                     }
                 }
 
-                //if (String.IsNullOrWhiteSpace(CurrObject.Process.StartEvent.Outgoing))
-                //{
-                //    var item = bprocess.Tasks.FirstOrDefault();
-                //    CurrObject.Process.StartEvent.Outgoing = !String.IsNullOrWhiteSpace(item.ID) ? item.ID : "task_" + count;
-                //}
-
                 CurrObject.Process.SequenceFlow.Add(new SequenceFlow { Id = "seq_" + CurrObject.Process.SequenceFlow.Count(), SourceRef = CurrObject.Process.StartEvent.Id, TargetRef = bprocess.Tasks.Where(x => x.From.Count() == 0).FirstOrDefault() != null ? bprocess.Tasks.Where(x => x.From.Count() == 0).FirstOrDefault().ID : "" });
 
 
