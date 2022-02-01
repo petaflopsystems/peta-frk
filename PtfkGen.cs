@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using Petaframework.Interfaces;
 using PetaframeworkStd.Interfaces;
 using System;
@@ -356,7 +356,7 @@ namespace Petaframework
                         html.TypeSetter = ElementType.uploader;
                         if (!String.IsNullOrWhiteSpace(item.Value.MirroredOf) && _config?.CurrDForm != null && _ACTION == TypeDef.Action.UPDATE && _config?.CurrDForm.ID > 0)
                         {
-                            //Copiar o arquivo do banco de dados para a pasta temporaria
+                            //Copy the database file to the temporary folder
                             Tools.FromDbToTemp(obj, item, _config);
                         }
                     }
@@ -404,7 +404,7 @@ namespace Petaframework
                     {
                         html.Options = new List<Option>();
                         bool hasDescription = false;
-                        foreach (var opt in obj.GetSelectOptions(item.Key.Name).OrderBy(x => x.Text).ToList())//ManagerListItems(item.Key.Name, obj))
+                        foreach (var opt in obj.GetSelectOptions(item.Key.Name).OrderBy(x => x.Text).ToList())
                         {
                             var desc = opt.Description;
                             var curOption = new Option { Value = opt.Value, Html = opt.Text };
@@ -448,7 +448,6 @@ namespace Petaframework
                             htmlFieldSet.GroupList.Add(groupBy);
                         }
                     }
-                    //htmlFieldSet.groupList = grp;
                     htmlFieldSet.Html.Add(html);
                 }
                 else
@@ -612,29 +611,14 @@ namespace Petaframework
             html.Name = dformRequest.name;
             html.Options = new List<Option>();
 
-            //Retorno do datatables Server-Side
+            //Server-Side datatables return
             if (dformRequest.method != null && dformRequest.method.ToLower().Equals(Constants.FormMethod.Options))
             {
                 if (dformRequest.FilterObject == null)
                     ErrorTable.Err009();
 
-                //var ass = obj.GetType().Assembly;
-                //var filter = new PtfkFilter
-                //{
-                //    Session = obj.GetOwner(),
-                //    LogType = Tools.GetIPtfkLogClass(ass),
-                //    RestrictedBySession = obj.HasBusinessRestrictionsBySession(),
-                //    FilteredProperties = null,
-                //    FilteredValue = dformRequest.FilterObject.SearchValue ?? "",
-                //    PageSize = dformRequest.FilterObject.Length == 0 ? 10 : dformRequest.FilterObject.Length,
-                //    OrderByAscending = dformRequest.FilterObject.OrderAscending,
-                //    OrderByColumnIndex = dformRequest.FilterObject.OrderingColumnIndex,
-                //    PageIndex = dformRequest.FilterObject.Start / (dformRequest.FilterObject.Length == 0 ? 1 : dformRequest.FilterObject.Length),
-                //    StopAfterFirstHtml = dformRequest.FilterObject.StopAfterFirstHtml
-                //};
                 var filter = obj.GetPtfkFilter(dformRequest.FilterObject);
-                //var fromDB = obj.FilterDataItems(filter, obj);
-
+                
                 var dataList = GetHtmlItems(filter.Result.Items, filter);
 
                 dformRequest.OutputDataFilter = filter;
@@ -673,8 +657,7 @@ namespace Petaframework
                 StringBuilder tempProp = new StringBuilder();
                 StringBuilder jsonTxt = new StringBuilder();
                 List<String> arr = new List<string>();
-                //List<HtmlElement> lstToReturn = new List<HtmlElement>();
-
+                
                 var recordsFiltered = 0;
                 var count = dataItems.Count;
                 var pageCount = (dformRequest.FilterObject.Start + dformRequest.FilterObject.Length);
@@ -702,7 +685,7 @@ namespace Petaframework
                             try
                             {
                                 valor = jItem.First().Value<string>();
-                                if (iform.GetType().GetProperty(jItem.Name).PropertyType != typeof(String) && //Propriedades do tipo String não servem para a consulta
+                                if (iform.GetType().GetProperty(jItem.Name).PropertyType != typeof(String) && //String type properties are not used for the query
                                     (
                                     iform.GetType().GetProperty(jItem.Name).PropertyType.GetInterfaces().Contains(typeof(IPtfkEntity)) ||
                                     iform.GetType().GetProperty(jItem.Name).PropertyType.GetInterfaces().Any(x => x.IsGenericType &&
@@ -718,7 +701,7 @@ namespace Petaframework
 
                             if (string.IsNullOrWhiteSpace(valor))
                                 valor = "";
-                            //Search REGEX não implementado
+                            //TODO Search REGEX not implemented
                             if (Convert.ToString(valor).ToLower().Contains(dformRequest.FilterObject.SearchValue.ToLower()))
                                 findSearchValue = true;
 
@@ -729,13 +712,12 @@ namespace Petaframework
                             recordsFiltered++;
                             if (recordsFiltered > 1)
                                 jsonTxt.Append(",");
-                            jsonTxt.Append("{ " + tempProp.ToString().Substring(0, tempProp.ToString().Length - 1) + " }");
-                            //lstToReturn.Add(dataList.Where(x => x.Id.Equals(id)).FirstOrDefault());
+                            jsonTxt.Append("{ " + tempProp.ToString().Substring(0, tempProp.ToString().Length - 1) + " }");                            
                         }
                     }
                 }
                 else
-                    if (filter?.Applied == true || !String.IsNullOrWhiteSpace(dformRequest.FilterObject.SearchValue))//Consulta todos os registros da base
+                    if (filter?.Applied == true || !String.IsNullOrWhiteSpace(dformRequest.FilterObject.SearchValue))//Query all database registers
                 {
                     for (int i = 0; i < count; i++)
                     {
@@ -762,7 +744,7 @@ namespace Petaframework
 
                             if (string.IsNullOrWhiteSpace(valor))
                                 valor = "";
-                            //Search REGEX não implementado
+                            //TODO Search REGEX not implemented
                             if (Convert.ToString(valor).ToLower().Contains(dformRequest.FilterObject.SearchValue.ToLower()))
                                 findSearchValue = true;
 
@@ -773,8 +755,7 @@ namespace Petaframework
                             recordsFiltered++;
                             if (recordsFiltered > 1)
                                 jsonTxt.Append(",");
-                            jsonTxt.Append("{ " + tempProp.ToString().Substring(0, tempProp.ToString().Length - 1) + " }");
-                            //lstToReturn.Add(dataList.Where(x => x.Id.Equals(id.ToString())).FirstOrDefault());
+                            jsonTxt.Append("{ " + tempProp.ToString().Substring(0, tempProp.ToString().Length - 1) + " }");                            
                         }
                     }
                 }
@@ -800,7 +781,7 @@ namespace Petaframework
                 }
             }
             else
-            if (dformRequest.method != null && dformRequest.method.ToLower().Equals(Constants.FormMethod.Connect))//Retorno do controle customizável
+            if (dformRequest.method != null && dformRequest.method.ToLower().Equals(Constants.FormMethod.Connect))//Custom control return
             {
                 html.TypeSetter = ElementType.container;
                 html.Options.Add(new Option { Description = "custom" });
