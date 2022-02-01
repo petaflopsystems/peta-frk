@@ -18,21 +18,6 @@ namespace Petaframework
 
             _Running = true;
 
-            //var lstToRemove = new List<String>();
-            ////lock (UserCache)
-            //{
-            //    foreach (var item in UserCache)
-            //    {
-            //        if (UserCache[item.Key].ContainsKey(_LAST_TIME_ATTRNAME) && ((DateTime)UserCache[item.Key][_LAST_TIME_ATTRNAME]) < DateTime.Now.AddMinutes(-_CacheLifetimeMinutes))
-            //            lstToRemove.Add(item.Key);
-            //        else
-            //            MakeUserCache(item.Key);
-            //    }
-            //    foreach (var item in lstToRemove)
-            //    {
-            //        UserCache.Remove(item);
-            //    }
-            //}
             if (UserCache != null && UserCache.Any())
                 lock (UserCache)
                     Strict.ConfigurationManager.ReadOrWriteCollection<Dictionary<String, Dictionary<String, object>>>("User", CopyUser(), true);
@@ -102,9 +87,7 @@ namespace Petaframework
                     GlobalCache = new Dictionary<string, object>();
                 _CacheLifetimeMinutes = cacheLifetimeMinutes;
                 _timerGlobal = new Timer(RunGlobal, null, TimeSpan.FromSeconds(0), TimeSpan.FromMinutes(_CacheLifetimeMinutes));
-                //}
-                //if (UserCache == null)
-                //{     
+                
                 if (UserCache == null)
                     UserCache = new Dictionary<string, Dictionary<string, object>>();
                 lock (UserCache)
@@ -122,10 +105,10 @@ namespace Petaframework
                 _timer = new Timer(Run, null, TimeSpan.FromSeconds(0), TimeSpan.FromMinutes(_CacheLifetimeMinutes));
 
             }
-            //_Config = configClass;
+
             if (_Config == null)
                 SetConfig();
-            //System.Threading.Tasks.Task.Factory.StartNew(() => MakeUserCache(owner.Login), System.Threading.Tasks.TaskCreationOptions.LongRunning);
+
         }
 
         private static void InitializeParams()
@@ -182,7 +165,6 @@ namespace Petaframework
             if (_DisabledAll)
                 return null;
             if (GlobalCache == null)
-                //GlobalCache = new Dictionary<string, object>();
                 Initialize(owner, null, 2);
             if (GlobalCache.ContainsKey(cacheID))
                 try
@@ -379,8 +361,6 @@ namespace Petaframework
         internal static List<IPtfkSession> GetOrSetWorkflowUsers(IPtfkSession owner)
         {
             var master = new PtfkCache();
-
-            //TODO colocar outros tipo de bases de dados de usuário aqui se necessário
 
             var c = master.GetCache<List<IPtfkSession>>(null, nameof(IPtfkSession) + "_WorkflowUsers");
             if (c != null && c.Where(x => x.Login.Equals(owner.Login)).Any())
