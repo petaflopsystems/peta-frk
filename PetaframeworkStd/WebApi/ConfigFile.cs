@@ -14,9 +14,6 @@ namespace PetaframeworkStd.WebApi
         {
             get
             {
-                //var cb = System.Reflection.Assembly.GetExecutingAssembly().Location;
-                //string path = Path.GetDirectoryName(cb).ToLower();
-                //path = path.Remove(0, 6);
                 var d = OS.IsGnu() ? new DirectoryInfo(BaseDirectoryName) : new DirectoryInfo(OS.GetAssemblyPath(BaseDirectoryName));
                 return d;
             }
