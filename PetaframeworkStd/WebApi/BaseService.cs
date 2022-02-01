@@ -230,9 +230,7 @@ namespace PetaframeworkStd.WebApi
 
             MultipartFormDataContent form = new MultipartFormDataContent();
             HttpContent content = new StringContent("file");
-            //HttpContent DictionaryItems = new FormUrlEncodedContent(parameters);
-            //form.Add(content, "file");
-            //form.Add(DictionaryItems);
+ 
             foreach (var item in parameters)
             {
                 form.Add(new StringContent(item.Value), item.Key);
@@ -336,7 +334,6 @@ namespace PetaframeworkStd.WebApi
             }
             else
             {
-                //form.Add(content);
                 httpResponse = (client.PostAsync(Path, content)).Result;
             }
             return GetResponse(httpResponse, serviceParameters);
