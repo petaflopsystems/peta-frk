@@ -25,10 +25,10 @@ namespace PetaframeworkStd.Commons
 
     public enum Associates
     {
-        Owner,//Quem criou
-        NextParent,//Quem aprova primeiro nível
-        AllParents,//Todos os aprovadores acima
-        Actors//Todos que participaram no processo
+        Owner,//Who created
+        NextParent,//Who approves on the first level
+        AllParents,//All approvers
+        Actors//Everyone who participated in the process
     }
 
 }
