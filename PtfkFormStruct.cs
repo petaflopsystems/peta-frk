@@ -313,7 +313,7 @@ namespace Petaframework
                                     else
                                     {
                                         if (t == typeof(Int32) ||
-                                            t == typeof(Int64))//Se for inteiro e nullable verificar se o valor é zero
+                                            t == typeof(Int64))//If it is integer and nullable check if the value is zero
                                         {
                                             var id = Convert.ToInt64((htmlElem.Value == null) ? null : Convert.ChangeType(Tools.DecodeBase64(Convert.ToString(htmlElem.Value)), t));
                                             if (id != 0)
@@ -389,7 +389,7 @@ namespace Petaframework
                                         if (toSaveFile == null)
                                             toSaveFile = fromMemory.FirstOrDefault();
                                         if (toSaveFile != null && toSaveFile.FileInfo == null)
-                                            toSaveFile = PtfkFileInfo.GetFiles(Owner, toSave.ClassName, currInput.Value.MirroredOf, (toSave as IPtfkEntity).Id).LastOrDefault(); //PtfkFileInfo.GetFiles(Owner).Where(x => x.UID.Equals(toSaveFile.UID)).FirstOrDefault();
+                                            toSaveFile = PtfkFileInfo.GetFiles(Owner, toSave.ClassName, currInput.Value.MirroredOf, (toSave as IPtfkEntity).Id).LastOrDefault(); 
                                         var prop = toSave.GetType().GetProperty(currInput.Value.MirroredOf);
                                         try
                                         {
@@ -449,7 +449,7 @@ namespace Petaframework
                     }
                 }
             }
-            //TODO verificar resposta em auto salvamento
+            //TODO check answer in auto save
             if (toSave?.CurrentGenerator?.CurrentPageConfig?.SkipCache == true)
             {
                 return toSave;
@@ -488,10 +488,7 @@ namespace Petaframework
                 {
                     var prop = toSave.GetType().GetProperty(item.Key.Name);
                     if (prop.GetValue(toSave) == null)
-                        //if (Tools.IsNullable(prop.PropertyType))
-                        Tools.SetValue(toSave, prop.Name, false);
-                    //else
-                    // prop.SetValue(toSave, Convert.ChangeType(false, prop.PropertyType));
+                        Tools.SetValue(toSave, prop.Name, false);                    
                 }
             }
             SecurityCheck(toSave, workflow, false);
@@ -501,7 +498,7 @@ namespace Petaframework
 
         private void SecurityCheck<T>(T t, System.Threading.Tasks.Task<IPtfkWorkflow<T>> workflow, bool preCheck = true) where T : PtfkForm<T>, new()
         {
-            if (preCheck)//Verifica se a entidade em alteraçao pode ser alterada pelo usuário
+            if (preCheck)//Checks if the changing entity can be changed by the user
             {
                 if (ID <= 0)
                     return;
@@ -534,15 +531,9 @@ namespace Petaframework
 
                 if (workflow.Result != null)
                     _EnabledInputs = System.Threading.Tasks.Task.Factory.StartNew(() => SetEnabledInputs<T>(workflow.Result, t));
-                else
-                {
-                    //var validInputTypes = TypeDef.GetEditFlags(action);
-                    //var inputs = t.GetInputs().Where(x => x.Value.InputType.GetUniqueFlags().Where(y => validInputTypes.HasValue && validInputTypes.Value.HasFlag(y)).Count() > 0);
 
-                    //this._EnabledInputs = inputs;
-                }
             }
-            else //Verifica se existe campos não permitidos para edição que foram alterados
+            else //Checks if there are fields that are not allowed for editing that have been changed - Security Alert
             {
 
             }
