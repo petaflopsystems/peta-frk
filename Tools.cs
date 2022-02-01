@@ -80,7 +80,6 @@ namespace Petaframework
 
         public static IEnumerable<string> GetProfileFromWorkflow(IPtfkWorkflow<IPtfkForm> workflow, string taskId)
         {
-            //workflow.ListAllTasks().Where(o => o.ID.Equals(x.Id.ToString())).FirstOrDefault().Profiles.Select(r => r.ID).ToArray()
             foreach (var task in workflow.ListAllTasks())
                 if (task.ID.Equals(taskId))
                     foreach (var p in task.Profiles)
@@ -257,17 +256,11 @@ namespace Petaframework
 
             var Db = context as DbContext;
 
-            //TODO formatar consultas para outros bancos alem do SQLite e SQL Server.
+            //TODO format queries for databases other than SQLite and SQL Server.
             var entityType = Db.Model.FindEntityType(typeof(T));
             var logType = Db.Model.FindRuntimeEntityType(filterParam.LogType?.GetType());
-            //EF Core 2.0
-            // Table info 
-            //var tableName = "[" + entityType.Relational().TableName + "]";
-            //var logTableName = "[" + logType?.Relational().TableName + "]";
-            //var tableSchema = entityType.Relational().Schema;
-
-            //EF Core 3.0
-            // Table info 
+            
+			// Table info 
             var tableName = "[" + entityType.GetTableName() + "]";
             var logTableName = "[" + logType?.GetTableName() + "]";
             var tableSchema = entityType.GetSchema();
@@ -284,24 +277,18 @@ namespace Petaframework
             var props = entityType.GetProperties().Where(x => filterParam.FilteredProperties.Contains(x.Name));
             // Column info 
             int count = 1;
-            //var order = "";
             var orderColumn = "";
             if (!filterParam.FilteredProperties.Contains(idProp.Name))
-                stmt.AppendFormat(" e.[{0}] LIKE '%{1}%'", idProp.GetColumnName()/*.Relational().ColumnName*/, val);
+                stmt.AppendFormat(" e.[{0}] LIKE '%{1}%'", idProp.GetColumnName(), val);
             if (filterParam.OrderByColumnIndex == 0)
-                orderColumn = idProp.GetColumnName();//orderColumn = idProp.Relational().ColumnName;
+                orderColumn = idProp.GetColumnName();
             foreach (var property in props)
             {
-                var columnName = property.GetColumnName();//.Relational().ColumnName;
-                //var columnType = property.Relational().ColumnType;
-                //if (count == 0)
-                //    stmt.AppendFormat(" [{0}] LIKE '%{1}%'", columnName, val);
-                //else
+                var columnName = property.GetColumnName();
                 stmt.AppendFormat(" OR e.[{0}] LIKE '%{1}%'", columnName, val);
                 if (count == filterParam.OrderByColumnIndex)
                 {
-                    orderColumn = columnName;
-                    // order = " ORDER BY [" + columnName + "] " + (filterParam.OrderByAscending ? "asc" : "desc");
+                    orderColumn = columnName;                
                 }
                 count++;
             };
@@ -352,18 +339,6 @@ namespace Petaframework
                         Db.Set<T>().FromSqlRaw(sql).Count());
 
             filterParam.Applied = true;
-
-            //EF Core 3.0
-            // Table info 
-            //var tableName = entityType.GetTableName();
-            //var tableSchema = entityType.GetSchema();
-
-            //// Column info 
-            //foreach (var property in entityType.GetProperties())
-            //{
-            //    var columnName = property.GetColumnName();
-            //    var columnType = property.GetColumnType();
-            //};
 
             return filterParam;
         }
@@ -508,27 +483,6 @@ namespace Petaframework
 
             return JToken.DeepEquals(xpctJSON, actJSON);
 
-
-            //var expectedDoc = JsonConvert.DeserializeXmlNode(expected, "root");
-            //var actualDoc = JsonConvert.DeserializeXmlNode(actual, "root");
-
-
-            //var diff = JsonDiffer.JsonDifferentiator.Differentiate(expected, actual);
-            //return JsonDiffer.JsonDifferentiator.Equals(expected, actual);
-
-            //var diff = new XmlDiff(XmlDiffOptions.IgnoreWhitespace |
-            //                       XmlDiffOptions.IgnoreChildOrder);
-            //using (var ms = new MemoryStream())
-            //{
-            //    var writer = new XmlTextWriter(ms, Encoding.UTF8);
-            //    var result = diff.Compare(expectedDoc, actualDoc, writer);
-            //    if (!result)
-            //    {
-            //        ms.Seek(0, SeekOrigin.Begin);
-            //        Console.WriteLine(new StreamReader(ms).ReadToEnd());
-            //    }
-            //    return result;
-            //}
         }
 
 
@@ -1900,11 +1854,8 @@ namespace Petaframework
             var connection = req.HttpContext.Connection;
             if (connection.RemoteIpAddress.IsSet())
             {
-                //We have a remote address set up
                 return connection.LocalIpAddress.IsSet()
-                    //Is local is same as remote, then we are local
                     ? connection.RemoteIpAddress.Equals(connection.LocalIpAddress)
-                    //else we are remote if the remote IP address is not a loopback address
                     : IPAddress.IsLoopback(connection.RemoteIpAddress);
             }
 
