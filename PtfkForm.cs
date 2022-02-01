@@ -314,7 +314,7 @@ namespace Petaframework
         }
 
         /// <summary>
-        /// A Key é o nome do atributo que necessitará de validações
+        /// The Key is the attributte's name that will need validate
         /// </summary>
         internal List<KeyValuePair<String, Validate>> Validates { get; set; }
 
@@ -637,7 +637,7 @@ namespace Petaframework
 
         public IEnumerable<KeyValuePair<String, Object>> GetReadables(ReadableFieldType readableFieldType)
         {
-            var temp = GetAttributeByNameValue("", null);//Executa essa linha para certificar de que todos os campos foram incluidos
+            var temp = GetAttributeByNameValue("", null);//Run this line to make sure all fields are included
             var list = Captions.Where(x => x.Value.Equals(readableFieldType)).Select(x => new KeyValuePair<String, Object>(
                 x.Key.Name,
                  GetType().GetProperty(x.Key.Name).GetValue(this, null)
@@ -884,35 +884,18 @@ namespace Petaframework
 
         private Func<T, T> CreateNewStatement(IEnumerable<string> fields)
         {
-            // input parameter "o"
             var xParameter = Expression.Parameter(typeof(T), "o");
-
-            // new statement "new Data()"
             var xNew = Expression.New(typeof(T));
-
-            // create initializers
             var bindings = fields.Select(o => o.Trim())
                 .Select(o =>
                 {
-
-                    // property "Field1"
                     var mi = typeof(T).GetProperty(o);
-
-                    // original value "o.Field1"
                     var xOriginal = Expression.Property(xParameter, mi);
-
-                    // set value "Field1 = o.Field1"
                     return Expression.Bind(mi, xOriginal);
                 }
             );
-
-            // initialization "new Data { Field1 = o.Field1, Field2 = o.Field2 }"
             var xInit = Expression.MemberInit(xNew, bindings);
-
-            // expression "o => new Data { Field1 = o.Field1, Field2 = o.Field2 }"
             var lambda = Expression.Lambda<Func<T, T>>(xInit, xParameter);
-
-            // compile to Func<Data, Data>
             return lambda.Compile();
         }
 
@@ -1001,7 +984,7 @@ Expression.Lambda<Func<T, bool>>(
     )
     ),
     param
-); // for LINQ to SQl/Entities skip Compile() call
+); 
                         result.AddRange(temp.Where(condition).Select(x => x.Id));
 
                     }
@@ -1042,7 +1025,6 @@ Expression.Lambda<Func<T, bool>>(
                 {
                     try
                     {
-                        //TODO verificar outros tipos menos comuns
                         //equals
                         var condition =
                          Expression.Lambda<Func<T, bool>>(
@@ -1051,7 +1033,7 @@ Expression.Lambda<Func<T, bool>>(
                              Expression.Constant(filter.FilteredValue)
                              ),
                              param
-                         ); // for LINQ to SQl/Entities skip Compile() call
+                         );
 
                         result.AddRange(temp.Where(condition).Select(x => x.Id));
                     }
@@ -1121,7 +1103,7 @@ Expression.Lambda<Func<T, bool>>(
                 }
             }
             else
-                GetAttributeByNameValue("", "");//Executa essa linha para certificar de que todos os campos foram incluidos
+                GetAttributeByNameValue("", "");
             if (Captions != null)
             {
                 try
@@ -1249,7 +1231,7 @@ Expression.Lambda<Func<T, bool>>(
 
         internal IEnumerable<KeyValuePair<PropertyInfo, FormCaptionAttribute>> GetAllCaptions()
         {
-            var temp = GetAttributeByNameValue("", null);//Executa essa linha para certificar de que todos os campos foram incluidos
+            var temp = GetAttributeByNameValue("", null);
             return Captions;
         }
 
@@ -1283,7 +1265,7 @@ Expression.Lambda<Func<T, bool>>(
 
         public IEnumerable<KeyValuePair<PropertyInfo, FormCaptionAttribute>> GetSubforms(params InputType[] returnWithListing)
         {
-            var temp = GetAttributeByNameValue("", null);//Executa essa linha para certificar de que todos os campos foram incluidos
+            var temp = GetAttributeByNameValue("", null);
             if (returnWithListing != null && returnWithListing.Length > 0)
             {
                 var list = new List<KeyValuePair<PropertyInfo, FormCaptionAttribute>>();
@@ -1305,7 +1287,7 @@ Expression.Lambda<Func<T, bool>>(
 
         public IEnumerable<KeyValuePair<String, Object>> GetImplicits()
         {
-            var temp = GetAttributeByNameValue("", null);//Executa essa linha para certificar de que todos os campos foram incluidos
+            var temp = GetAttributeByNameValue("", null);
             var implicitList = Captions.Where(x => x.Value.IsImplicit).Select(x => new KeyValuePair<String, Object>(
                 x.Key.Name,
                  GetType().GetProperty(x.Key.Name).GetValue(this, null)
@@ -1387,7 +1369,7 @@ Expression.Lambda<Func<T, bool>>(
                 return new List<IPtfkForm>().AsQueryable();
             if (GetType().GetInterfaces().Contains(typeof(IPtfkWorker)))
             {
-                //Adicionar os que o usuário deve tomar ação
+                //Add the ones the user should take action on
                 var all = (BusinessClass.ListAll() as IQueryable<IPtfkWorker>).AsEnumerable();
                 var process = PtfkCache.GetOrSet<List<String>>("ProcessList", () => all.Select(x => x.Entity).Distinct().ToList(), 30);
                 var items = new List<IPtfkWorker>();
