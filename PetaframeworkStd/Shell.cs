@@ -106,8 +106,6 @@ namespace PetaframeworkStd
                     switch (output)
                     {
                         case Output.Internal:
-                            // $"".fmNewLine();
-
                             while (!process.StandardOutput.EndOfStream)
                             {
                                 string line = process.StandardOutput.ReadLine();
