@@ -29,11 +29,9 @@ namespace PetaframeworkStd
 
         public static string GetAssemblyPath(string relativePath = "")
         {
-            //var rootPath = PtfkEnvironment.CurrentEnvironment.WebHostEnvironment.ContentRootPath;
             if (PetaframeworkStd.OS.IsGnu())//For Docker Environment
             {
                 String path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location).ToLower();
-                //path = path.Remove(0, 5);
                 DirectoryInfo dockerDir = new DirectoryInfo(Path.Combine(path, relativePath));
                 PtfkConsole.WriteConfig("App root path (GNU)", path);
                 return Path.Combine(dockerDir.FullName);
@@ -41,7 +39,6 @@ namespace PetaframeworkStd
             else
             {
                 String path = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location).ToLower();
-                //path = path.Remove(0, 6);
                 FileInfo file = new FileInfo(path);
                 PtfkConsole.WriteConfig("App root path (Win/Mac)", path);
                 return Path.Combine(path, relativePath) + "\\";
