@@ -22,7 +22,7 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore 
     - name: Publish  
-      uses: brandedoutcast/publish-nuget@2.5.5
+      uses: brandedoutcast/publish-nuget@v2.5.5
       with:   
         PROJECT_FILE_PATH: Petaframework.csproj  
         NUGET_KEY: ${{secrets.NUGET_API_KEY}} 
