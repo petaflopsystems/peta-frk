@@ -20,11 +20,11 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --configuration Release --no-restore
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v1.6
     - name: Publish  
-      uses: petaflopsystems/peta-frk@main
+      uses: brandedoutcast/publish-nuget@v2.5.2
       with:   
         PROJECT_FILE_PATH: Petaframework.csproj  
         NUGET_KEY: ${{secrets.NUGET_API_KEY}} 
