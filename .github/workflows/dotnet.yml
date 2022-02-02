@@ -20,9 +20,7 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --configuration Release --no-restore
-    - name: SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@v1.6
+      run: dotnet build --configuration Release --no-restore 
     - name: Publish  
       uses: brandedoutcast/publish-nuget@v2.5.2
       with:   
