@@ -1,0 +1,32 @@
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@v1.6
+    - name: Publish  
+      uses: brandedoutcast/publish-nuget@v2.5.2
+      with:   
+        PROJECT_FILE_PATH: Petaframework.csproj  
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}} 
+
+
