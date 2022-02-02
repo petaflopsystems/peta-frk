@@ -21,12 +21,10 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@v1.6
     - name: Publish  
-      uses: petaflopsystems/peta-frk@v1.5.22
+      uses: petaflopsystems/peta-frk@master
       with:   
         PROJECT_FILE_PATH: Petaframework.csproj  
         NUGET_KEY: ${{secrets.NUGET_API_KEY}} 
