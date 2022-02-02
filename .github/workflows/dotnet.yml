@@ -27,5 +27,6 @@ jobs:
       with:   
         PROJECT_FILE_PATH: Petaframework.csproj  
         NUGET_KEY: ${{secrets.NUGET_API_KEY}} 
+        VERSION_REGEX:	^\s*<VersionSuffix>(.*)<\/VersionSuffix>\s*$
 
 
