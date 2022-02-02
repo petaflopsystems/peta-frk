@@ -40,7 +40,4 @@
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy &quot;C:\Codigos\v5.0\Peta-frk\PtfkSolution\Petaframework\bin\Debug\net5.0\Petaframework.dll&quot; &quot;C:\Codigos\v3.1\Workflow\PtfkCommonWebFiles\WebApp\WebFilesToTransfer\lib&quot; /Y /S&#xD;&#xA;del /s /f /q &quot;C:\Codigos\v5.0\Workflow\PtfkCommonWebFiles\WebApp\WebFilesToTransfer\lib\publish&quot;&#xD;&#xA;" />
-  </Target>
 </Project>
