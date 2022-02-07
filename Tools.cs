@@ -348,7 +348,7 @@ namespace Petaframework
             {
                 return GetExceptionMessage(ex.InnerException);
             }
-            return ex.Message;
+            return ex.Message.Replace(PtfkEnvironment.CurrentEnvironment?.WebHostEnvironment?.ContentRootPath, "...");
         }
 
         public static bool WorkflowChecks<T>(T entity, params Petaframework.Enums.LogType[] logType) where T : class, IPtfkEntity
